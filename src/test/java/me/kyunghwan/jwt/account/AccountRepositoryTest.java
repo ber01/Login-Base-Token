@@ -12,7 +12,7 @@ class AccountRepositoryTest extends BaseTest {
     @Test
     public void saveTest() {
         String email = "email@email.com";
-        String password = "password";
+        String password = "1q2w3e4r5t!";
 
         Account account = accountRepository.save(Account.builder()
                 .email(email)
