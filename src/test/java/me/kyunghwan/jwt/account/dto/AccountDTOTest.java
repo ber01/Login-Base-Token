@@ -12,6 +12,7 @@ class AccountDTOTest {
     public void beanTest() {
         String email = "email.com";
         String password = "123";
+
         AccountDTO accountDTO = AccountDTO.builder()
                 .email(email)
                 .password(password)
@@ -20,6 +21,8 @@ class AccountDTOTest {
         assertThat(accountDTO).isNotNull();
         assertThat(accountDTO.getEmail()).isEqualTo(email);
         assertThat(accountDTO.getPassword()).isEqualTo(password);
+        assertThat(accountDTO.getName()).isNull();
+        assertThat(accountDTO.getPicture()).isNull();
     }
 
 }

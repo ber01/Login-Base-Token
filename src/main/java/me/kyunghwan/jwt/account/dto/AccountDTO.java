@@ -22,10 +22,16 @@ public class AccountDTO {
     @Pattern(regexp = "(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}") @NotBlank
     private String password;
 
+    private String name;
+
+    private String picture;
+
     public Account toEntity() {
         return Account.builder()
                 .email(this.email)
                 .password(this.password)
+                .name(this.name)
+                .picture(this.picture)
                 .build();
     }
 }

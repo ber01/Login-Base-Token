@@ -12,15 +12,21 @@ class AccountTest {
     void beanTest() {
         String email = "email@email.com";
         String password = "password";
+        String name = "name";
+        String picture = "picture_link";
 
         Account account = Account.builder()
                 .email(email)
                 .password(password)
+                .name(name)
+                .picture(picture)
                 .build();
 
         assertThat(account).isNotNull();
         assertThat(account.getEmail()).isEqualTo(email);
         assertThat(account.getPassword()).isEqualTo(password);
+        assertThat(account.getName()).isEqualTo(name);
+        assertThat(account.getPicture()).isEqualTo(picture);
     }
 
 }

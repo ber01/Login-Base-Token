@@ -24,4 +24,8 @@ public class Account {
     @Column @NotNull
     private String password;
 
+    private String name;
+
+    private String picture;
+
 }
