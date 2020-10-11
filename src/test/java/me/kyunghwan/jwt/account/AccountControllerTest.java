@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import java.util.stream.Stream;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -83,6 +84,41 @@ class AccountControllerTest extends BaseTest {
                 Arguments.of("email.com", "aaaaAAAAAA", null, null, "비밀번호 형식 오류 - 숫자 X, 특수문자 X"),
                 Arguments.of("email.com", "1234123412", null, null, "비밀번호 형식 오류 - 대소문자 X, 특수문자 X")
         );
+    }
+
+    @DisplayName("GET /api/accounts/idx Success")
+    @Test
+    void getAccountsIdxSuccess() throws Exception {
+        Account account = accountRepository.save(Account.builder()
+                .email("email@email.com")
+                .password("password1!")
+                .name("name")
+                .picture("picture_link")
+                .build());
+
+        Long idx = account.getIdx();
+
+        mockMvc.perform(get("/api/accounts/" + idx))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("idx").value(account.getIdx()))
+                .andExpect(jsonPath("email").value(account.getEmail()))
+                .andExpect(jsonPath("password").value(account.getPassword()))
+                .andExpect(jsonPath("name").value(account.getName()))
+                .andExpect(jsonPath("picture").value(account.getPicture()))
+        ;
+    }
+
+    @DisplayName("GET /api/accounts/idx Failure")
+    @Test
+    void getAccountsIdxFailure() throws Exception {
+        long idx = 100L;
+
+        mockMvc.perform(get("/api/accounts/" + idx))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message").value("잘못된 요청입니다."))
+        ;
     }
 
 }
