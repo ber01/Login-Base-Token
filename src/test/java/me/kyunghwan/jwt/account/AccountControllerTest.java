@@ -41,7 +41,6 @@ class AccountControllerTest extends BaseTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("idx").exists())
                 .andExpect(jsonPath("email").value(email))
-                .andExpect(jsonPath("password").value(password))
                 .andExpect(jsonPath("name").value(name))
                 .andExpect(jsonPath("picture").value(picture))
                 .andExpect(jsonPath("_links").exists())
@@ -65,7 +64,7 @@ class AccountControllerTest extends BaseTest {
                     .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message").value("잘못된 요청입니다."))
+                .andExpect(jsonPath("message").value("Bad Request"))
         ;
     }
 
@@ -103,7 +102,6 @@ class AccountControllerTest extends BaseTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("idx").value(account.getIdx()))
                 .andExpect(jsonPath("email").value(account.getEmail()))
-                .andExpect(jsonPath("password").value(account.getPassword()))
                 .andExpect(jsonPath("name").value(account.getName()))
                 .andExpect(jsonPath("picture").value(account.getPicture()))
         ;
@@ -117,7 +115,7 @@ class AccountControllerTest extends BaseTest {
         mockMvc.perform(get("/api/accounts/" + idx))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message").value("잘못된 요청입니다."))
+                .andExpect(jsonPath("message").value("Bad Request"))
         ;
     }
 

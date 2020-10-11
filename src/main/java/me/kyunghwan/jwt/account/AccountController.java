@@ -5,6 +5,7 @@ import me.kyunghwan.jwt.account.dto.AccountDTO;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class AccountController {
 
     private final AccountRepository accountRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping
     public ResponseEntity<?> postSignUp(@Valid @RequestBody AccountDTO accountDTO, Errors errors) {
@@ -26,7 +28,7 @@ public class AccountController {
             return badRequest();
         }
 
-        Account saveAccount = accountRepository.save(accountDTO.toEntity());
+        Account saveAccount = accountRepository.save(accountDTO.toEntity(passwordEncoder));
 
         WebMvcLinkBuilder self = linkTo(AccountController.class);
         EntityModel<Account> entityModel = EntityModel.of(saveAccount)
@@ -49,7 +51,7 @@ public class AccountController {
     }
 
     private ResponseEntity<String> badRequest() {
-        return ResponseEntity.badRequest().body("{\"message\" : \"잘못된 요청입니다.\"}");
+        return ResponseEntity.badRequest().body("{\"message\" : \"Bad Request\"}");
     }
 
 }
