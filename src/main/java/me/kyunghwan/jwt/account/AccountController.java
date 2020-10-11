@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RequiredArgsConstructor
@@ -20,15 +22,15 @@ public class AccountController {
 
     private final AccountRepository accountRepository;
 
-    @PostMapping("/sign-up")
-    public ResponseEntity<?> postSignUp(@RequestBody AccountDTO accountDTO, Errors errors) {
+    @PostMapping
+    public ResponseEntity<?> postSignUp(@Valid @RequestBody AccountDTO accountDTO, Errors errors) {
         if (errors.hasErrors()) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body("{\"message\" : \"잘못된 요청입니다.\"}");
         }
 
         Account saveAccount = accountRepository.save(accountDTO.toEntity());
 
-        WebMvcLinkBuilder self = linkTo(AccountController.class).slash("/sign-up");
+        WebMvcLinkBuilder self = linkTo(AccountController.class);
         EntityModel<Account> entityModel = EntityModel.of(saveAccount)
                 .add(self.withSelfRel());
 
