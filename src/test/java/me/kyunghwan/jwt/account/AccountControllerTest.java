@@ -7,21 +7,22 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import java.util.stream.Stream;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class AccountControllerTest extends BaseTest {
 
-    @DisplayName("POST /api/accounts Success")
+    @DisplayName("POST /api/accounts 201")
     @Test
-    void postSignUpSuccess() throws Exception {
+    void postAccounts201() throws Exception {
         String email = "test@email.com";
         String password = "1q2w3e4r5t!";
         String name = "name";
@@ -48,10 +49,10 @@ class AccountControllerTest extends BaseTest {
         ;
     }
 
-    @DisplayName("POST /api/accounts Failure")
+    @DisplayName("POST /api/accounts 400")
     @ParameterizedTest(name = "#{index} : {4}")
     @MethodSource("params")
-    void postSignUpFailure(String email, String password, String name, String picture, String message) throws Exception {
+    void postAccounts400(String email, String password, String name, String picture, String message) throws Exception {
         AccountDTO dto = AccountDTO.builder()
                 .email(email)
                 .password(password)
@@ -85,19 +86,32 @@ class AccountControllerTest extends BaseTest {
         );
     }
 
-    @DisplayName("GET /api/accounts/idx Success")
+    @DisplayName("GET /api/accounts/idx 401")
     @Test
-    void getAccountsIdxSuccess() throws Exception {
-        Account account = accountRepository.save(Account.builder()
-                .email("email@email.com")
-                .password("password1!")
-                .name("name")
-                .picture("picture_link")
-                .build());
+    void getAccountsIdx401() throws Exception {
+        String email = "email@email.com";
+        String password = "password1!";
+        Account account = saveAccount(email, password);
 
         Long idx = account.getIdx();
 
         mockMvc.perform(get("/api/accounts/" + idx))
+                .andDo(print())
+                .andExpect(status().isUnauthorized())
+        ;
+    }
+
+    @DisplayName("GET /api/accounts/idx 200")
+    @Test
+    void getAccountsIdx200() throws Exception {
+        String email = "email@email.com";
+        String password = "password1!";
+
+        Account account = saveAccount(email, password);
+
+        Long idx = account.getIdx();
+        mockMvc.perform(get("/api/accounts/" + idx)
+                    .header(HttpHeaders.AUTHORIZATION, createJwtToken(account)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("idx").value(account.getIdx()))
@@ -107,12 +121,22 @@ class AccountControllerTest extends BaseTest {
         ;
     }
 
-    @DisplayName("GET /api/accounts/idx Failure")
+    private String createJwtToken(Account account) {
+        return "Bearer " + jwtTokenProvider.createToken(account.getUsername(), account.getAuthorities());
+    }
+
+    @DisplayName("GET /api/accounts/idx 400")
     @Test
-    void getAccountsIdxFailure() throws Exception {
+    void getAccountsIdx400() throws Exception {
+        String email = "email@email.com";
+        String password = "password1!";
+
+        Account account = saveAccount(email, password);
+
         long idx = 100L;
 
-        mockMvc.perform(get("/api/accounts/" + idx))
+        mockMvc.perform(get("/api/accounts/" + idx)
+                    .header(HttpHeaders.AUTHORIZATION, createJwtToken(account)))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("message").value("Bad Request"))
