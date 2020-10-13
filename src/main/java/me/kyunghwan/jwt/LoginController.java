@@ -2,6 +2,7 @@ package me.kyunghwan.jwt;
 
 import lombok.RequiredArgsConstructor;
 import me.kyunghwan.jwt.account.Account;
+import me.kyunghwan.jwt.account.AccountAdapter;
 import me.kyunghwan.jwt.account.AccountRepository;
 import me.kyunghwan.jwt.account.dto.AccountDTO;
 import me.kyunghwan.jwt.jwt.JwtTokenProvider;
@@ -31,7 +32,8 @@ public class LoginController {
         Account account = optional.get();
         if (!passwordEncoder.matches(accountDTO.getPassword(), account.getPassword())) return badRequest();
 
-        String jwtToken = jwtTokenProvider.createToken(account.getUsername(), account.getAuthorities());
+        AccountAdapter accountAdapter = new AccountAdapter(account);
+        String jwtToken = jwtTokenProvider.createToken(accountAdapter.getUsername(), accountAdapter.getAuthorities());
         return ResponseEntity.ok("{\"message\" : " + "\"Bearer " + jwtToken + "\"}");
     }
 

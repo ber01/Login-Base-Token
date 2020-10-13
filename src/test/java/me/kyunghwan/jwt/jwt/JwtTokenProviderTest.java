@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import me.kyunghwan.jwt.BaseTest;
 import me.kyunghwan.jwt.account.Account;
+import me.kyunghwan.jwt.account.AccountAdapter;
 import me.kyunghwan.jwt.account.dto.AccountDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,8 @@ class JwtTokenProviderTest extends BaseTest {
     }
 
     private String getCreateJwtToken(Account account) {
-        return jwtTokenProvider.createToken(account.getEmail(), account.getAuthorities());
+        AccountAdapter accountAdapter = new AccountAdapter(account);
+        return jwtTokenProvider.createToken(accountAdapter.getUsername(), accountAdapter.getAuthorities());
     }
 
     private String getLoginRequestJwtToken(String email, String password) throws Exception {
@@ -136,7 +138,7 @@ class JwtTokenProviderTest extends BaseTest {
 
     private String getCreateExpireToken(Account account) {
         Claims claims = Jwts.claims().setSubject(account.getEmail());
-        claims.put("roles", account.getAuthorities());
+        claims.put("roles", new AccountAdapter(account).getAuthorities());
 
         Date now = new Date();
 

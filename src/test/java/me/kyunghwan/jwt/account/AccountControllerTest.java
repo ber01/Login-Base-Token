@@ -122,7 +122,8 @@ class AccountControllerTest extends BaseTest {
     }
 
     private String createJwtToken(Account account) {
-        return "Bearer " + jwtTokenProvider.createToken(account.getUsername(), account.getAuthorities());
+        AccountAdapter accountAdapter = new AccountAdapter(account);
+        return "Bearer " + jwtTokenProvider.createToken(accountAdapter.getUsername(), accountAdapter.getAuthorities());
     }
 
     @DisplayName("GET /api/accounts/idx 400")
