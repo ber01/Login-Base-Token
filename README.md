@@ -67,7 +67,7 @@
 
 ## DataBase SCHEMA
 
-개발환경에서는 `H2` 를 운영환경에서는 `MySQL` 를 사용하였습니다. 이에 따른 설정파일 세팅 방법은 아래를 참고하세요.
+개발환경에서는 `H2` 를 운영환경에서는 `MySQL` 를 사용하였습니다. 이에 따른 설정파일 세팅 방법은 [아래](#run)를 참고하세요.
 
 ### Account
 
@@ -106,7 +106,7 @@
 2. **Gradle**
 
    ```
-   $ git clone https://github.com/ber01/Spring-Security-Login-Skeleton.git
+   $ git clone https://github.com/ber01/Login-Base-Token.git
    $ cd Spring-Security-Login-Skeleton
    $ ./gradlew test
    $ ./gradlew build
