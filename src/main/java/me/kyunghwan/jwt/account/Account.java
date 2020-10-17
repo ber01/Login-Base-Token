@@ -21,11 +21,17 @@ public class Account {
     @Column(unique = true) @NotNull
     private String email;
 
-    @Column @NotNull
+    @Column
     private String password;
 
     private String name;
 
     private String picture;
+
+    public Account update(String name, String picture) {
+        this.name = name;
+        this.picture = picture;
+        return this;
+    }
 
 }

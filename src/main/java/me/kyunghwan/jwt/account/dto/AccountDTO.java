@@ -35,4 +35,14 @@ public class AccountDTO {
                 .picture(this.picture)
                 .build();
     }
+
+    public Account toEntity() {
+        return Account.builder()
+                .email(this.email)
+                .password(this.password)
+                .name(this.name)
+                .picture(this.picture)
+                .build();
+    }
+
 }
