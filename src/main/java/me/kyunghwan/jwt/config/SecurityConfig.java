@@ -38,6 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 스프링 시큐리티가 세션을 생성하지도않고 기존것을 사용하지도 않음
                     .and()
                 .authorizeRequests()
+                    .antMatchers("/sign-in").permitAll()
+                    .antMatchers("/login/google/auth").permitAll()
                     .antMatchers("/api/accounts").permitAll()
                     .antMatchers("/api/login").permitAll()
                     .anyRequest().hasRole("USER")

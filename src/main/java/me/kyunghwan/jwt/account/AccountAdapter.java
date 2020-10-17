@@ -13,8 +13,12 @@ public class AccountAdapter extends User {
     private final Account account;
 
     public AccountAdapter(Account account) {
-        super(account.getEmail(), account.getPassword(), authorities());
+        super(account.getEmail(), password(account), authorities());
         this.account = account;
+    }
+
+    private static String password(Account entity) {
+        return entity.getPassword() == null ? "google" : entity.getPassword();
     }
 
     private static Collection<? extends GrantedAuthority> authorities() {
