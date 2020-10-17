@@ -25,7 +25,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
-public class AuthController {
+public class OAuthController {
 
     private final AccountRepository accountRepository;
 

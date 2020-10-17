@@ -26,4 +26,21 @@ class AccountAdapterTest {
         assertThat(accountAdapter.getAuthorities()).isNotNull();
     }
 
+    @DisplayName("Account Adapter 생성 테스트2")
+    @Test
+    void createAccountAdapter2() {
+        String email = "test@email.com";
+
+        Account account = Account.builder()
+                .email(email)
+                .build();
+
+        AccountAdapter accountAdapter = new AccountAdapter(account);
+
+        assertThat(accountAdapter.getAccount()).isEqualTo(account);
+        assertThat(accountAdapter.getUsername()).isEqualTo(email);
+        assertThat(accountAdapter.getPassword()).isEqualTo("google");
+        assertThat(accountAdapter.getAuthorities()).isNotNull();
+    }
+
 }
