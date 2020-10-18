@@ -39,7 +39,7 @@ class AccountAdapterTest {
 
         assertThat(accountAdapter.getAccount()).isEqualTo(account);
         assertThat(accountAdapter.getUsername()).isEqualTo(email);
-        assertThat(accountAdapter.getPassword()).isEqualTo("google");
+        assertThat(accountAdapter.getPassword()).isNull();
         assertThat(accountAdapter.getAuthorities()).isNotNull();
     }
 
