@@ -1,6 +1,7 @@
 package me.kyunghwan.jwt.config;
 
 import lombok.RequiredArgsConstructor;
+import me.kyunghwan.jwt.jwt.JwtExpireTokenRepository;
 import me.kyunghwan.jwt.jwt.JwtTokenFilter;
 import me.kyunghwan.jwt.jwt.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final JwtExpireTokenRepository jwtExpireTokenRepository;
 
     @Bean
     @Override
@@ -44,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/api/login").permitAll()
                     .anyRequest().hasRole("USER")
                     .and()
-                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider, jwtExpireTokenRepository), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                     .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
         ;

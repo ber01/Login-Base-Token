@@ -2,7 +2,7 @@ package me.kyunghwan.jwt;
 
 import org.junit.jupiter.api.Test;
 
-class JwtApplicationTests {
+class AppTests {
 
     @Test
     void contextLoads() {

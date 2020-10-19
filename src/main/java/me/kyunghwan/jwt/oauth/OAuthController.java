@@ -77,7 +77,7 @@ public class OAuthController {
         Account account = saveOrUpdate(userInfo);
         AccountAdapter accountAdapter = new AccountAdapter(account);
         String jwtToken = jwtTokenProvider.createToken(accountAdapter.getUsername(), accountAdapter.getAuthorities());
-        return ResponseEntity.ok("{\"message\" : " + "\"Bearer " + jwtToken + "\"}");
+        return ResponseEntity.ok("{\"access_token\" : " + "\"Bearer " + jwtToken + "\"}");
     }
 
     private Account saveOrUpdate(Map<String, String> userInfo) {

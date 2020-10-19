@@ -24,6 +24,10 @@ class AccountAdapterTest {
         assertThat(accountAdapter.getUsername()).isEqualTo(email);
         assertThat(accountAdapter.getPassword()).isEqualTo(password);
         assertThat(accountAdapter.getAuthorities()).isNotNull();
+        assertThat(accountAdapter.isAccountNonExpired()).isTrue();
+        assertThat(accountAdapter.isAccountNonLocked()).isTrue();
+        assertThat(accountAdapter.isCredentialsNonExpired()).isTrue();
+        assertThat(accountAdapter.isEnabled()).isTrue();
     }
 
     @DisplayName("Account Adapter 생성 테스트2")

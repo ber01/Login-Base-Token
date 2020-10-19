@@ -34,7 +34,7 @@ public class LoginController {
 
         AccountAdapter accountAdapter = new AccountAdapter(account);
         String jwtToken = jwtTokenProvider.createToken(accountAdapter.getUsername(), accountAdapter.getAuthorities());
-        return ResponseEntity.ok("{\"message\" : " + "\"Bearer " + jwtToken + "\"}");
+        return ResponseEntity.ok("{\"access_token\" : " + "\"Bearer " + jwtToken + "\"}");
     }
 
     private ResponseEntity<String> badRequest() {

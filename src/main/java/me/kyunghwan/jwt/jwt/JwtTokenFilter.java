@@ -16,15 +16,20 @@ import java.io.IOException;
 public class JwtTokenFilter extends GenericFilterBean {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final JwtExpireTokenRepository jwtExpireTokenRepository;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
-        if (token != null && jwtTokenProvider.validateToken(token) && token.startsWith("Bearer ")) {
+        if (token != null && jwtTokenProvider.validateToken(token) && token.startsWith("Bearer ") && !isFindToken(token)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(token.substring(7));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         chain.doFilter(request, response);
+    }
+
+    private boolean isFindToken(String token) {
+        return jwtExpireTokenRepository.existsByJwtToken(token.substring(7));
     }
 
 }

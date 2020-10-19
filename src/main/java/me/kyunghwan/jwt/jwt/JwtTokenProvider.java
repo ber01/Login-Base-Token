@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,7 +23,9 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    private String secretKey = "MinKH";
+    @Value("${secret-key")
+    private String secretKey;
+
     private final UserDetailsService userDetailsService;
 
     @PostConstruct
@@ -30,7 +33,6 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    // 토큰 생성
     public String createToken(String username, Collection<? extends GrantedAuthority> roles) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("roles", roles);

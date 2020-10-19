@@ -65,7 +65,7 @@ class JwtTokenProviderTest extends BaseTest {
     private String parseToken(String token) {
         JsonParser jsonParser = new JacksonJsonParser();
         Map<String, Object> map = jsonParser.parseMap(token);
-        return ((String) map.get("message")).substring(7);
+        return ((String) map.get("access_token")).substring(7);
     }
 
     @DisplayName("Authentication 객체를 생성하는 테스트")
