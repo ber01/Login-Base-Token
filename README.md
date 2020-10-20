@@ -1,7 +1,7 @@
 # Login-Base-Token [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://travis-ci.org/ber01/Login-Base-Token.svg?branch=master)](https://travis-ci.org/ber01/Login-Base-Token) [![Coverage Status](https://coveralls.io/repos/github/ber01/Login-Base-Token/badge.svg)](https://coveralls.io/github/ber01/Login-Base-Token)
 자주 사용되는 로그인, 회원가입 기능에 대한 베이스 코드를 작성한 뒤 향후 프로젝트에 적용하기 위해 만든 저장소입니다.
 
-# Index
+# 목차
 
 - [주요 기능](#주요-기능)
 - [폴더 구조](#폴더-구조)
@@ -33,9 +33,10 @@
 │   └── me
 │       └── kyunghwan
 │           └── jwt
+│               ├── App.java
 │               ├── IndexController.java
-│               ├── JwtApplication.java
 │               ├── LoginController.java
+│               ├── LogoutController.java
 │               ├── account
 │               │   ├── Account.java
 │               │   ├── AccountAdapter.java
@@ -48,6 +49,8 @@
 │               │   ├── AppConfig.java
 │               │   └── SecurityConfig.java
 │               ├── jwt
+│               │   ├── JwtExpireToken.java
+│               │   ├── JwtExpireTokenRepository.java
 │               │   ├── JwtTokenFilter.java
 │               │   └── JwtTokenProvider.java
 │               └── oauth
@@ -57,27 +60,37 @@
 │                       └── GoogleOAuthResponse.java
 └── resources
     ├── application.yml
-    ├── static
     └── templates
         └── sign-in.html
+
+
 ```
 # API 소개
 
-작성중 ..
+https://ksyj8256.gitbook.io/login-base-token-api/
 
 # 데이터베이스 스키마
 
-개발환경에서는 `H2` 를 운영환경에서는 `MySQL` 를 사용하였습니다. 이에 따른 설정파일 세팅 방법은 [아래](#run)를 참고하세요.
+개발환경에서는 `H2` 를 운영환경에서는 `MySQL` 를 사용하였습니다. 이에 따른 설정파일 세팅 방법은 [아래](#실행방법)를 참고하세요.
 
 ## Account
 
-|   필드   |     타입     | NULL |   KEY   |
-| :------: | :----------: | :--: | :-----: |
-|   IDX    |  bigint(20)  |  NO  | Primary |
-|  EMAIL   | varchar(255) |  NO  | Unique  |
-|   NAME   | varchar(255) | YES  |    -    |
-| PASSWORD | varchar(255) |  NO  |    -    |
-| PICTURE  | varchar(255) | YES  |    -    |
+|   필드   |     타입     | NULL |   KEY   | DESC |
+| :------: | :----------: | :--: | :-----: | :--: |
+|   IDX    |  bigint(20)  |  NO  | Primary | PK |
+|  EMAIL   | varchar(255) |  NO  | Unique  | 이메일 |
+|   NAME   | varchar(255) | YES  |    -    | 이름 |
+| PASSWORD | varchar(255) |  NO  |    -    | 비밀번호 |
+| PICTURE  | varchar(255) | YES  |    -    | 프로필 이미지 |
+
+## Jwt Expire Token
+
+|   필드   |     타입     | NULL |   KEY   | DESC |
+| :------: | :----------: | :--: | :-----: | :--: |
+|   IDX    |  bigint(20)  |  NO  | Primary | PK |
+|  EXPIRE_DATE  | datetime(6) |  NO  | - | 만료 시간 |
+|   JWT_TOKEN   | varchar(255) | NO |    -    | 만료된 토큰 |
+
 
 # 실행방법
 
@@ -127,7 +140,7 @@ File → New → Project From Version Control
 URL : https://github.com/ber01/Spring-Security-Login-Skeleton.git → CLONE
 ```
 
-프로젝트 로딩이 끝나면 `JwtApplication.java` 클래스를 실행한다.
+프로젝트 로딩이 끝나면 `App.java` 클래스를 실행한다.
 
 ## Gradle 
 
@@ -139,7 +152,7 @@ $ ./gradlew clean build
 $ ./gradlew bootrun
 ```
 
-## 개발환경
+# 개발환경
 
 |     도구     |              버전               |
 | :----------: | :-----------------------------: |
